@@ -36,7 +36,7 @@ Manhattan total complaints: **61,956**
 
 *Verified: grep -c for "MANHATTAN" returns 61,970 (includes header); CSV-parsed count = 61,956 ✓*
 
-![Top 10 Complaints in Manhattan](fig-borough-rbl.png)
+![Top 10 Complaints in Manhattan](pngs/fig-borough-rbl.png)
 
 ### Staten Island
 
@@ -50,7 +50,7 @@ Staten Island total complaints: **9,871**
 | 4 | Street Light Condition | 418 | 4.23% |
 | 5 | Blocked Driveway | 392 | 3.97% |
 
-![Top 10 Complaints in Staten Island](fig-borough-rbl-2.png)
+![Top 10 Complaints in Staten Island](pngs/fig-borough-rbl-2.png)
 
 **Scripts:** [`scripts/manhattan_analysis.py`](scripts/manhattan_analysis.py), [`scripts/staten_island_analysis.py`](scripts/staten_island_analysis.py)
 
@@ -70,7 +70,7 @@ Dropped **196 rows** where Borough is "Unspecified" (no population to normalize 
 
 *Verified: Bronx per-1,000 = 74,674 ÷ 1,472,654 × 1000 = 50.71 ✓*
 
-![Complaints per 1,000 Residents](fig-borough-per1000.png)
+![Complaints per 1,000 Residents](pngs/fig-borough-per1000.png)
 
 **Analysis:** Ranks changed between raw-count and per-capita comparisons. Brooklyn has the most raw complaints (88,591) but falls to #3 per capita (32.38 per 1,000). The Bronx jumps from #3 in raw count (74,674) to #1 per capita (50.71 per 1,000). This is explained by the Bronx's higher population density and larger share of rent-regulated multi-family housing, which drives more 311 complaints about heat/hot water and noise between close-together units — issues that scale with density, not just population count. Staten Island, the least dense borough, has both the fewest raw complaints and the lowest per-capita rate.
 
@@ -88,13 +88,13 @@ HEAT/HOT WATER complaints peak at **9:00**, while Noise - Residential complaints
 
 *Verified (hour 9:00 HEAT/HOT WATER): counter value 2,799 matches hourly bin total ✓*
 
-![Hourly complaint rhythms](fig-hours.png)
+![Hourly complaint rhythms](pngs/fig-hours.png)
 
-![Hourly complaint rhythms by borough](fig-hours-borough-check.png)
+![Hourly complaint rhythms by borough](pngs/fig-hours-borough-check.png)
 
 ### Heatmap: Noise - Residential across 30 days × 24 hours
 
-![Day × Hour heatmap](fig-nights.png)
+![Day × Hour heatmap](pngs/fig-nights.png)
 
 The curve is not the same every night. Weekends, especially Saturdays, have much higher evening peaks than weekdays. The heatmap shows a clear weekly rhythm with bright horizontal bands on weekend rows. The standout night is **November 30 (Sunday)** — it has the highest total complaints (3,301) and the highest night-window count (1,325 from 20:00–03:59). I believe this was caused by the Thanksgiving holiday (November 27) extending into the long holiday weekend — people had family gatherings and time off, generating more noise complaints on Sunday night as the holiday weekend concluded.
 
@@ -145,7 +145,7 @@ Three checks rule out boring explanations:
 
 *Verified: Queens median recomputed via manual sort → 42.84 hours ✓*
 
-![HEAT/HOT WATER median hours by borough](fig-same-job.png)
+![HEAT/HOT WATER median hours by borough](pngs/fig-same-job.png)
 
 **Analysis:** The gap between the fastest borough (Staten Island, 27.74 hours) and the slowest (Queens, 42.84 hours) is 15.10 hours — a 1.5× difference for identical work (all HEAT/HOT WATER complaints are handled by HPD). The "different jobs" excuse does not apply here: every complaint is the same problem type, handled by the same agency. The gap could be driven by several factors: differences in housing stock density (more units per building in the Bronx and Manhattan means more heat complaints per inspector), staffing levels per borough, or travel distances between inspections. To tell the candidates apart, I would need data not in this file: inspector caseloads per borough, average travel time between inspections, staffing ratios, and the age or condition of the housing stock in each borough.
 
@@ -179,4 +179,4 @@ I used an LLM (DeepSeek-powered agent) to generate the analysis scripts in this 
 - **What it got wrong:** On the first attempt at reading the CSV, the LLM used `cut -d','` on the shell to count distinct values by column position, which failed because quoted fields containing commas broke the column alignment. It also initially used `utf-8` encoding without `errors="replace"`, which caused a `UnicodeDecodeError` on row 7,651.
 - **How I caught it:** The `cut` approach returned nonsensical results (hundreds of "Problem Detail" values instead of "Problem" values), and the encoding error was caught immediately on first run. I corrected both by switching to Python's native `csv.DictReader` with `errors="replace"`, which handles quoted commas and encoding issues properly. Later, I also caught that the API key was hardcoded in the census script (a security issue) and moved it to an environment variable.
 
----
+
