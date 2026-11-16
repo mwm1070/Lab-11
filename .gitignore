@@ -1,0 +1,18 @@
+# Environment / secrets
+key.txt
+
+# Large data files
+nyc-311-2025-november.csv
+
+# Generated figures
+*.png
+
+# macOS junk
+.DS_Store
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Editor temp files
+*.save
